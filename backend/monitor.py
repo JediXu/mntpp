@@ -8,17 +8,14 @@ import subprocess
 import time
 import json
 import logging
-import re
 from typing import Dict, List, Any
 from .ovs_controller import OVSController
-from backend.mininet_manager import MininetManager
 
 logger = logging.getLogger(__name__)
 
 class NetworkMonitor:
-    def __init__(self, mininet_manager: MininetManager):
+    def __init__(self):
         self.ovs_controller = OVSController()
-        self.mininet_manager = mininet_manager
         self.monitoring_data = {}
         self.is_monitoring = False
     
@@ -251,118 +248,3 @@ class NetworkMonitor:
         except Exception as e:
             logger.error(f"Error loading monitoring data: {e}")
             return False
-
-    def _parse_ip_stats(self, output: str) -> Dict[str, Any]:
-        """解析 'ip -s link' 命令的输出"""
-        stats = {
-            'RX': {'bytes': 0, 'packets': 0, 'errors': 0, 'dropped': 0},
-            'TX': {'bytes': 0, 'packets': 0, 'errors': 0, 'dropped': 0}
-        }
-
-        lines = output.splitlines()
-
-        try:
-            # Find the RX line index
-            rx_line_index = -1
-            for i, line in enumerate(lines):
-                if 'RX: bytes' in line:
-                    rx_line_index = i
-                    break
-
-            if rx_line_index != -1 and rx_line_index + 1 < len(lines):
-                # The next line contains the values
-                rx_values = lines[rx_line_index + 1].split()
-                if len(rx_values) >= 4:
-                    stats['RX']['bytes'] = int(rx_values[0])
-                    stats['RX']['packets'] = int(rx_values[1])
-                    stats['RX']['errors'] = int(rx_values[2])
-                    stats['RX']['dropped'] = int(rx_values[3])
-
-            # Find the TX line index
-            tx_line_index = -1
-            for i, line in enumerate(lines):
-                if 'TX: bytes' in line:
-                    tx_line_index = i
-                    break
-
-            if tx_line_index != -1 and tx_line_index + 1 < len(lines):
-                # The next line contains the values
-                tx_values = lines[tx_line_index + 1].split()
-                if len(tx_values) >= 4:
-                    stats['TX']['bytes'] = int(tx_values[0])
-                    stats['TX']['packets'] = int(tx_values[1])
-                    stats['TX']['errors'] = int(tx_values[2])
-                    stats['TX']['dropped'] = int(tx_values[3])
-        except (ValueError, IndexError) as e:
-            logger.error(f"Failed to parse ip stats output: {e}\nOutput was:\n{output}")
-
-        return stats
-
-    def get_host_stats(self, host_name: str) -> Dict[str, Any]:
-        """获取单个主机的接口统计信息"""
-        try:
-            # The interface name inside the host is typically <host_name>-eth0
-            interface = f"{host_name}-eth0"
-            cmd = f"ip -s link show {interface}"
-
-            result = self.mininet_manager.execute_command_on_host(host_name, cmd)
-
-            if not result['success']:
-                # Also check for the case where the interface doesn't exist
-                if 'does not exist' in result.get('error', ''):
-                     return {'success': False, 'error': f'Interface {interface} not found on host {host_name}.'}
-                return result
-
-            # Parse the output
-            stats = self._parse_ip_stats(result['output'])
-            return {'success': True, 'stats': stats}
-
-        except Exception as e:
-            logger.error(f"Error getting stats for host {host_name}: {e}", exc_info=True)
-            return {'success': False, 'error': str(e)}
-
-    def _parse_ip_stats(self, output: str) -> Dict[str, Any]:
-        """解析 'ip -s link' 命令的输出"""
-        stats = {
-            'RX': {'bytes': 0, 'packets': 0, 'errors': 0, 'dropped': 0},
-            'TX': {'bytes': 0, 'packets': 0, 'errors': 0, 'dropped': 0}
-        }
-
-        lines = output.splitlines()
-
-        try:
-            # Find the RX line index
-            rx_line_index = -1
-            for i, line in enumerate(lines):
-                if 'RX: bytes' in line:
-                    rx_line_index = i
-                    break
-
-            if rx_line_index != -1 and rx_line_index + 1 < len(lines):
-                # The next line contains the values
-                rx_values = lines[rx_line_index + 1].split()
-                if len(rx_values) >= 4:
-                    stats['RX']['bytes'] = int(rx_values[0])
-                    stats['RX']['packets'] = int(rx_values[1])
-                    stats['RX']['errors'] = int(rx_values[2])
-                    stats['RX']['dropped'] = int(rx_values[3])
-
-            # Find the TX line index
-            tx_line_index = -1
-            for i, line in enumerate(lines):
-                if 'TX: bytes' in line:
-                    tx_line_index = i
-                    break
-
-            if tx_line_index != -1 and tx_line_index + 1 < len(lines):
-                # The next line contains the values
-                tx_values = lines[tx_line_index + 1].split()
-                if len(tx_values) >= 4:
-                    stats['TX']['bytes'] = int(tx_values[0])
-                    stats['TX']['packets'] = int(tx_values[1])
-                    stats['TX']['errors'] = int(tx_values[2])
-                    stats['TX']['dropped'] = int(tx_values[3])
-        except (ValueError, IndexError) as e:
-            logger.error(f"Failed to parse ip stats output: {e}\nOutput was:\n{output}")
-
-        return stats

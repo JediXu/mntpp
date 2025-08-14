@@ -1,10 +1,17 @@
 # Python依赖包列表
+# 适用于Ubuntu 20.04
 
-# PyQt6 for GUI
-PyQt6
-
-# Network related
+# 网络相关
 networkx>=2.5
+matplotlib>=3.3.0
 
-# D-Bus for system integration
+# 可选：用于增强功能
+# pandas>=1.1.0
+# numpy>=1.19.0
+
+# 开发工具（可选）
+# pytest>=6.0.0
+# black>=21.0.0
+
+# 自动打开mn CLI需安装dbus-python，手动安装命令：sudo apt install python3-dbus，或完整安装：sudo apt install dbus-x11
 dbus-python>=1.2.16

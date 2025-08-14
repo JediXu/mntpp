@@ -200,34 +200,17 @@ class MyTopo(Topo):
             script += '\n        # 添加主机\n'
             for host in topology.get('hosts', []):
                 name = host['name']
-                # 支持从host数据中直接获取ip和mac
-                ip = host.get('ip', f'10.0.0.{len(topology.get("hosts", [])) + 1}/24')
-                mac = host.get('mac')
-
-                mac_param = f', mac="{mac}"' if mac else ''
-                script += f'        self.addHost("{name}", ip="{ip}"{mac_param})\n'
-
+                host_id = int(name[1:])  # 从h1, h2等提取数字ID
+                ip = host.get('ip', f'10.0.0.{host_id}/16')  # 改为/16子网掩码
+                mac = f'00:00:00:00:00:{host_id:02x}'  # MAC地址末位与IP末位相同
+                script += f'        self.addHost("{name}", ip="{ip}", mac="{mac}")\n'
+            
             # 添加链路
             script += '\n        # 添加链路\n'
-            use_tc_link = any(link.get('bw') is not None or link.get('delay') or link.get('loss') is not None for link in topology.get('links', []))
-
             for link in topology.get('links', []):
                 src = link['src']
                 dst = link['dst']
-
-                params = {}
-                if link.get('bw') is not None:
-                    params['bw'] = link['bw']
-                if link.get('delay'):
-                    params['delay'] = f"'{link['delay']}'" # Delay is a string
-                if link.get('loss') is not None:
-                    params['loss'] = link['loss']
-
-                if params:
-                    param_str = ", ".join([f"{k}={v}" for k, v in params.items()])
-                    script += f'        self.addLink("{src}", "{dst}", {param_str})\n'
-                else:
-                    script += f'        self.addLink("{src}", "{dst}")\n'
+                script += f'        self.addLink("{src}", "{dst}")\n'
             
             # 添加主函数
             script += '''
@@ -240,13 +223,8 @@ def run():
         
         # 创建拓扑
         topo = MyTopo()
-'''
-            if use_tc_link:
-                script += "        net = Mininet(topo=topo, controller=None, switch=OVSSwitch, link=TCLink)\n"
-            else:
-                script += "        net = Mininet(topo=topo, controller=None, switch=OVSSwitch)\n"
-
-            script += '''
+        net = Mininet(topo=topo, controller=None, switch=OVSSwitch)
+        
         info('*** Starting network\\n')
         net.start()
         

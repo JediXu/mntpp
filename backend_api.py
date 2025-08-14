@@ -7,9 +7,6 @@
 import logging
 import json
 import os
-import subprocess
-import tempfile
-import time
 from typing import Dict, List, Any, Optional
 
 # 导入所有后端模块
@@ -470,47 +467,6 @@ if __name__ == '__main__':
             logger.error(f"Error getting system info: {e}")
             return {'success': False, 'error': str(e)}
 
-    def get_host_stats(self, host_name: str) -> Dict[str, Any]:
-        """获取单个主机的接口统计信息 (TMUX-Compatible)"""
-        if not self.is_experiment_running:
-            return {'success': False, 'error': 'Experiment not running'}
-
-        tmp_file = None
-        try:
-            # Create a temporary file to store the output
-            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
-                tmp_file = f.name
-
-            # Command to be executed in the tmux session
-            interface = f"{host_name}-eth0"
-            command_to_run = f"{host_name} ip -s link show {interface} > {tmp_file}"
-
-            # Send the command to the tmux session
-            tmux_cmd = f"sudo tmux send-keys -t mininet_session '{command_to_run}' Enter"
-            subprocess.run(tmux_cmd, shell=True, check=True)
-
-            # Wait for the command to execute and write to the file
-            time.sleep(1.5) # This is a fragile but necessary evil with this architecture
-
-            # Read the output from the temporary file
-            with open(tmp_file, 'r') as f:
-                output = f.read()
-
-            if not output:
-                return {'success': False, 'error': f'Could not get stats for {host_name}. Is the host name correct?'}
-
-            # We can reuse the parser logic from monitor.py here
-            stats = self.monitor._parse_ip_stats(output) # Assuming monitor has the parser
-            return {'success': True, 'stats': stats}
-
-        except Exception as e:
-            logger.error(f"Error getting stats for host {host_name}: {e}", exc_info=True)
-            return {'success': False, 'error': str(e)}
-        finally:
-            # Clean up the temporary file
-            if tmp_file and os.path.exists(tmp_file):
-                os.remove(tmp_file)
-
 # 创建全局后端实例
 backend = BackendAPI()
 
@@ -546,10 +502,6 @@ def calculate_path(src, dst, algorithm='dijkstra'):
 def get_system_info():
     """获取系统信息（兼容接口）"""
     return backend.get_system_info()
-
-def get_host_stats(host_name):
-    """获取主机统计信息（兼容接口）"""
-    return backend.get_host_stats(host_name)
 
 def attach_to_cli():
     """附加到CLI（兼容接口）"""
