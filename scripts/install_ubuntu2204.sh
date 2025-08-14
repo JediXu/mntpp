@@ -34,7 +34,8 @@ sudo apt install -y \
     xterm \
     gnome-terminal \
     net-tools \
-    iproute2
+    iproute2 \
+    git
 
 # 可选：安装其他终端（增强兼容性）
 echo "🖥️  安装额外终端（可选）..."
@@ -43,10 +44,15 @@ sudo apt install -y konsole xfce4-terminal terminator
 # 安装Python依赖
 echo "🐍 安装Python依赖..."
 if [ -f "requirements.txt" ]; then
-    pip3 install -r requirements.txt
+    sudo pip3 install -r requirements.txt
 else
-    pip3 install networkx matplotlib dbus-python
+    sudo pip3 install networkx matplotlib dbus-python
 fi
+
+# 拉取mntpp
+cd ~
+git clone https://github.com/JediXu/mntpp/mntpp.git
+cd mntpp
 
 # 配置权限
 echo "🔑 配置权限..."
