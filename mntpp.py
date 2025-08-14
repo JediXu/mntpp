@@ -20,7 +20,8 @@ except ImportError as e:
     logging.warning(f"Backend modules not available: {e}")
 
 try:
-    import gui
+    # Point to the new PyQt app
+    import pyqt_app
     GUI_AVAILABLE = True
     logging.info("GUI modules loaded successfully")
 except ImportError as e:
@@ -48,7 +49,7 @@ def check_dependencies():
         'ovs-vsctl': 'which ovs-vsctl',
         'ovs-ofctl': 'which ovs-ofctl',
         'tmux': 'which tmux',
-        'python3-tk': 'python3 -c "import tkinter"'
+        'PyQt6': 'python3 -c "import PyQt6.QtCore"'
     }
     
     missing = []
@@ -113,8 +114,8 @@ def main():
         
         print("启动GUI模式...")
         try:
-            import gui
-            gui.main()
+            # Call the new PyQt app's main function
+            pyqt_app.main()
         except Exception as e:
             print(f"启动GUI失败: {e}")
             sys.exit(1)
