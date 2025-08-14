@@ -51,7 +51,7 @@ fi
 
 # 拉取mntpp
 cd ~
-git clone https://github.com/JediXu/mntpp/mntpp.git
+git clone https://github.com/JediXu/mntpp.git
 cd mntpp
 
 # 配置权限
