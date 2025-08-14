@@ -1,0 +1,207 @@
+{
+  "nodes": [
+    {
+      "id": "s1",
+      "type": "switch",
+      "x": 269.0,
+      "y": 215.0
+    },
+    {
+      "id": "s2",
+      "type": "switch",
+      "x": 470.0,
+      "y": 221.0
+    },
+    {
+      "id": "s3",
+      "type": "switch",
+      "x": 672.0,
+      "y": 222.0
+    },
+    {
+      "id": "s4",
+      "type": "switch",
+      "x": 670.0,
+      "y": 377.0
+    },
+    {
+      "id": "s5",
+      "type": "switch",
+      "x": 475.0,
+      "y": 394.0
+    },
+    {
+      "id": "s6",
+      "type": "switch",
+      "x": 271.0,
+      "y": 386.0
+    },
+    {
+      "id": "h1",
+      "type": "host",
+      "x": 196.0,
+      "y": 127.0
+    },
+    {
+      "id": "h2",
+      "type": "host",
+      "x": 277.0,
+      "y": 126.0
+    },
+    {
+      "id": "h3",
+      "type": "host",
+      "x": 414.0,
+      "y": 137.0
+    },
+    {
+      "id": "h4",
+      "type": "host",
+      "x": 497.0,
+      "y": 138.0
+    },
+    {
+      "id": "h5",
+      "type": "host",
+      "x": 640.0,
+      "y": 137.0
+    },
+    {
+      "id": "h6",
+      "type": "host",
+      "x": 736.0,
+      "y": 144.0
+    },
+    {
+      "id": "h7",
+      "type": "host",
+      "x": 733.0,
+      "y": 463.0
+    },
+    {
+      "id": "h8",
+      "type": "host",
+      "x": 631.0,
+      "y": 458.0
+    },
+    {
+      "id": "h9",
+      "type": "host",
+      "x": 531.0,
+      "y": 471.0
+    },
+    {
+      "id": "h10",
+      "type": "host",
+      "x": 405.0,
+      "y": 474.0
+    },
+    {
+      "id": "h11",
+      "type": "host",
+      "x": 299.0,
+      "y": 475.0
+    },
+    {
+      "id": "h12",
+      "type": "host",
+      "x": 196.0,
+      "y": 471.0
+    }
+  ],
+  "links": [
+    {
+      "source": "s1",
+      "target": "s6"
+    },
+    {
+      "source": "s4",
+      "target": "s3"
+    },
+    {
+      "source": "s2",
+      "target": "s5"
+    },
+    {
+      "source": "s6",
+      "target": "s5"
+    },
+    {
+      "source": "s5",
+      "target": "s4"
+    },
+    {
+      "source": "s3",
+      "target": "s2"
+    },
+    {
+      "source": "s2",
+      "target": "s1"
+    },
+    {
+      "source": "s1",
+      "target": "s5"
+    },
+    {
+      "source": "s5",
+      "target": "s3"
+    },
+    {
+      "source": "s2",
+      "target": "s4"
+    },
+    {
+      "source": "s6",
+      "target": "s2"
+    },
+    {
+      "source": "h1",
+      "target": "s1"
+    },
+    {
+      "source": "s1",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "target": "s2"
+    },
+    {
+      "source": "s2",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "target": "s3"
+    },
+    {
+      "source": "s3",
+      "target": "h6"
+    },
+    {
+      "source": "s4",
+      "target": "h7"
+    },
+    {
+      "source": "h8",
+      "target": "s4"
+    },
+    {
+      "source": "h9",
+      "target": "s5"
+    },
+    {
+      "source": "s5",
+      "target": "h10"
+    },
+    {
+      "source": "h11",
+      "target": "s6"
+    },
+    {
+      "source": "s6",
+      "target": "h12"
+    }
+  ],
+  "paths": {}
+}

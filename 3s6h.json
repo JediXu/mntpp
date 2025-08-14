@@ -1,0 +1,97 @@
+{
+  "nodes": [
+    {
+      "id": "h1",
+      "type": "host",
+      "x": 162.0,
+      "y": 140.0
+    },
+    {
+      "id": "h2",
+      "type": "host",
+      "x": 294.0,
+      "y": 180.0
+    },
+    {
+      "id": "h4",
+      "type": "host",
+      "x": 552.0,
+      "y": 226.0
+    },
+    {
+      "id": "s1",
+      "type": "switch",
+      "x": 198.0,
+      "y": 268.0
+    },
+    {
+      "id": "s2",
+      "type": "switch",
+      "x": 465.0,
+      "y": 331.0
+    },
+    {
+      "id": "h3",
+      "type": "host",
+      "x": 428.0,
+      "y": 194.0
+    },
+    {
+      "id": "s3",
+      "type": "switch",
+      "x": 298.0,
+      "y": 391.0
+    },
+    {
+      "id": "h5",
+      "type": "host",
+      "x": 191.0,
+      "y": 478.0
+    },
+    {
+      "id": "h6",
+      "type": "host",
+      "x": 395.0,
+      "y": 491.0
+    }
+  ],
+  "links": [
+    {
+      "source": "h1",
+      "target": "s1"
+    },
+    {
+      "source": "s2",
+      "target": "h4"
+    },
+    {
+      "source": "s2",
+      "target": "s1"
+    },
+    {
+      "source": "h2",
+      "target": "s1"
+    },
+    {
+      "source": "h3",
+      "target": "s2"
+    },
+    {
+      "source": "s1",
+      "target": "s3"
+    },
+    {
+      "source": "s3",
+      "target": "s2"
+    },
+    {
+      "source": "h6",
+      "target": "s3"
+    },
+    {
+      "source": "h5",
+      "target": "s3"
+    }
+  ],
+  "paths": {}
+}

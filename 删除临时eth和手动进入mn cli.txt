@@ -1,0 +1,5 @@
+清除veth残留：（当运行 mn -c后，ifconfig仍然看到veth时）
+sudo ip link show | grep -o 's[0-9]\+-eth[0-9]\+' | sort -u | xargs -I {} sudo ip link delete {}
+
+手动进入mininet终端：（tmux启动的mn已正常运行）
+sudo tmux attach-session -t mininet

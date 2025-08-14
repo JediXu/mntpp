@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "h1",
+      "type": "host",
+      "x": 108.0,
+      "y": 78.0
+    },
+    {
+      "id": "h2",
+      "type": "host",
+      "x": 234.0,
+      "y": 79.0
+    },
+    {
+      "id": "h4",
+      "type": "host",
+      "x": 546.0,
+      "y": 85.0
+    },
+    {
+      "id": "s1",
+      "type": "switch",
+      "x": 171.0,
+      "y": 184.0
+    },
+    {
+      "id": "s2",
+      "type": "switch",
+      "x": 471.0,
+      "y": 183.0
+    },
+    {
+      "id": "h3",
+      "type": "host",
+      "x": 400.0,
+      "y": 85.0
+    }
+  ],
+  "links": [
+    {
+      "source": "h1",
+      "target": "s1"
+    },
+    {
+      "source": "s2",
+      "target": "h4"
+    },
+    {
+      "source": "s2",
+      "target": "s1"
+    },
+    {
+      "source": "h2",
+      "target": "s1"
+    },
+    {
+      "source": "h3",
+      "target": "s2"
+    }
+  ],
+  "paths": {}
+}
